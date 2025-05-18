@@ -1,0 +1,11 @@
+Create the following icon files for the extension:
+
+1. icon16.png - 16x16 pixels
+2. icon48.png - 48x48 pixels
+3. icon128.png - 128x128 pixels
+
+You can create a simple icon with "KT" (for Kokborok Translator) or a logo representing translation.
+
+For temporary testing, you can use any standard icons, but for production, create custom icons that represent your extension's purpose.
+
+Once you've created the icons, this placeholder file can be deleted. 

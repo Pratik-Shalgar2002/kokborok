@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Icons for Kokborok Translator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .canvas-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .canvas-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+    .controls {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #f5f5f5;
+      border-radius: 5px;
+    }
+    .download-all {
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #3367d6;
+    }
+    input, select {
+      padding: 8px;
+      margin: 5px;
+    }
+    .color-picker {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .instructions {
+      background-color: #fffde7;
+      padding: 15px;
+      border-left: 4px solid #ffd600;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Icon Generator for Kokborok Translator</h1>
+  
+  <div class="instructions">
+    <h3>Instructions:</h3>
+    <p>Use this page to generate the required icons for your Chrome extension. After creating the icons, download them and place them in the 'icons' folder of your extension.</p>
+    <p>You need the following icons:</p>
+    <ul>
+      <li>icon16.png (16x16 pixels)</li>
+      <li>icon48.png (48x48 pixels)</li>
+      <li>icon128.png (128x128 pixels)</li>
+    </ul>
+  </div>
+  
+  <div class="controls">
+    <h3>Customize Your Icons:</h3>
+    
+    <div>
+      <label for="textInput">Icon Text (1-2 characters recommended):</label>
+      <input type="text" id="textInput" value="KT" maxlength="2">
+    </div>
+    
+    <div class="color-picker">
+      <label for="bgColor">Background Color:</label>
+      <input type="color" id="bgColor" value="#4285f4">
+    </div>
+    
+    <div class="color-picker">
+      <label for="textColor">Text Color:</label>
+      <input type="color" id="textColor" value="#ffffff">
+    </div>
+    
+    <button id="generateBtn">Generate Icons</button>
+  </div>
+  
+  <div class="canvas-container">
+    <div class="canvas-wrapper">
+      <h3>16x16</h3>
+      <canvas id="canvas16" width="16" height="16"></canvas>
+      <button class="download-btn" data-size="16">Download icon16.png</button>
+    </div>
+    
+    <div class="canvas-wrapper">
+      <h3>48x48</h3>
+      <canvas id="canvas48" width="48" height="48"></canvas>
+      <button class="download-btn" data-size="48">Download icon48.png</button>
+    </div>
+    
+    <div class="canvas-wrapper">
+      <h3>128x128</h3>
+      <canvas id="canvas128" width="128" height="128"></canvas>
+      <button class="download-btn" data-size="128">Download icon128.png</button>
+    </div>
+  </div>
+  
+  <div class="download-all">
+    <button id="downloadAllBtn">Download All Icons</button>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const generateBtn = document.getElementById('generateBtn');
+      const downloadAllBtn = document.getElementById('downloadAllBtn');
+      const textInput = document.getElementById('textInput');
+      const bgColorInput = document.getElementById('bgColor');
+      const textColorInput = document.getElementById('textColor');
+      const downloadBtns = document.querySelectorAll('.download-btn');
+      
+      // Generate icons initially
+      generateIcons();
+      
+      // Event listeners
+      generateBtn.addEventListener('click', generateIcons);
+      downloadAllBtn.addEventListener('click', downloadAllIcons);
+      
+      downloadBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const size = this.getAttribute('data-size');
+          downloadIcon(size);
+        });
+      });
+      
+      function generateIcons() {
+        const text = textInput.value;
+        const bgColor = bgColorInput.value;
+        const textColor = textColorInput.value;
+        
+        drawIcon('canvas16', 16, text, bgColor, textColor);
+        drawIcon('canvas48', 48, text, bgColor, textColor);
+        drawIcon('canvas128', 128, text, bgColor, textColor);
+      }
+      
+      function drawIcon(canvasId, size, text, bgColor, textColor) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
+        
+        // Clear canvas
+        ctx.clearRect(0, 0, size, size);
+        
+        // Draw background
+        ctx.fillStyle = bgColor;
+        ctx.beginPath();
+        ctx.arc(size/2, size/2, size/2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw text
+        ctx.fillStyle = textColor;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // Adjust font size based on icon size
+        const fontSize = Math.floor(size * 0.6);
+        ctx.font = `bold ${fontSize}px Arial`;
+        
+        ctx.fillText(text, size/2, size/2);
+      }
+      
+      function downloadIcon(size) {
+        const canvas = document.getElementById(`canvas${size}`);
+        const link = document.createElement('a');
+        link.download = `icon${size}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }
+      
+      function downloadAllIcons() {
+        downloadIcon('16');
+        downloadIcon('48');
+        downloadIcon('128');
+      }
+    });
+  </script>
+</body>
+</html> 
